@@ -25,8 +25,8 @@ namespace MyStamp.ViewModel
 
         public MainWindowViewModel()
         {
-            _starting = new Point(0, 0);
-            Point tmp = new Point(200, 200);
+            _starting = new Point(200, 200);
+            Point tmp = new Point(100, 100);
             initImage();
             imageMouseReleaseExecute(tmp);
         }
@@ -102,7 +102,25 @@ namespace MyStamp.ViewModel
 
             using (var dc = dv.RenderOpen())
             {
-                dc.DrawEllipse(brush, null, _starting, x, y);
+                //dc.DrawEllipse(brush, null, _starting, x, y);
+                //楕円を描く
+                dc.DrawEllipse(null, new Pen(brush, 5), _starting, x, y);
+                //TODO:境界線を描く（扇状）
+
+                //TODO:名前
+                FormattedText text = new FormattedText("┣゛┣゛┣゛┣゛┣゛",
+                    System.Globalization.CultureInfo.GetCultureInfo("ja"),
+                    FlowDirection.LeftToRight,
+                    new Typeface("ＭＳ Ｐゴシック"), 20, Brushes.Black
+                );
+                dc.DrawText(text, _starting);
+                //TODO:日付
+                FormattedText textDate = new FormattedText(DateTime.Now.ToShortDateString(),
+                    System.Globalization.CultureInfo.GetCultureInfo("ja"),
+                    FlowDirection.LeftToRight,
+                    new Typeface("ＭＳ Ｐゴシック"), 20, Brushes.Black
+                );
+                dc.DrawText(textDate, new Point(_starting.X, _starting.Y + 30));
             }
             _drawingVisuals.Add(dv);
             Render();
